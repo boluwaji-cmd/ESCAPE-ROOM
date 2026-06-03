@@ -1,0 +1,67 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-lint:
+    name: Build & Lint
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || github.ref != 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check if project is initialised
+        id: check
+        run: |
+          if [ -f "package.json" ]; then
+            echo "initialised=true" >> $GITHUB_OUTPUT
+          else
+            echo "initialised=false" >> $GITHUB_OUTPUT
+            echo "[SKIP] Main branch intentionally clean (Agile). No build needed."
+          fi
+
+      - name: Setup Node.js
+        if: steps.check.outputs.initialised == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: steps.check.outputs.initialised == 'true'
+        run: npm ci
+
+      - name: Run ESLint
+        if: steps.check.outputs.initialised == 'true'
+        run: npm run lint
+
+      - name: Run Unit Tests
+        if: steps.check.outputs.initialised == 'true'
+        run: npm test
+
+  deploy-edge-functions:
+    name: Deploy Edge Functions
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    needs: build-and-lint
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Deploy all Edge Functions
+        run: npx supabase functions deploy --no-verify-jwt
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
