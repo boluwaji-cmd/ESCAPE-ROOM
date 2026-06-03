@@ -1,6 +1,0 @@
-{
-  "deno.enable": false,
-  "files.exclude": {
-    "supabase/functions": false
-  }
-}
