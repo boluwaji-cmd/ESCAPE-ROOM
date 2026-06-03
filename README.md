@@ -77,7 +77,11 @@ cp .env.example .env.local
 # 4. Avvia il server di sviluppo
 npm run dev
 
-# 5. Deploya le Edge Functions (richiede Supabase CLI)
+# 5. Esegui i test
+npm test
+
+# 6. Deploya le Edge Functions (richiede Supabase CLI e login)
+npx supabase login
 npx supabase functions deploy --no-verify-jwt
 ```
 
@@ -142,7 +146,7 @@ escape-room-perugia/
 | [USERSTORY.md](USERSTORY.md) | 33 User Stories con checklist e note del progettista |
 | [SPECIFICA_CLIENTE.md](SPECIFICA_CLIENTE.md) | Requisiti dal punto di vista del committente AS GAIA |
 | [DOCUMENTAZIONE_TECNICA.md](DOCUMENTAZIONE_TECNICA.md) | Architettura, Edge Functions, schema DB, prompt design |
-| [PIANO_SVILUPPO.md](PIANO_SVILUPPO.md) | Sviluppo incrementale in 4 fasi |
+| [AGILE_GUIDE.md](AGILE_GUIDE.md) | Guida Agile/Scrum: workflow completo, cerimonie, ruoli, esempio pratico di una settimana |
 
 ---
 
@@ -182,7 +186,20 @@ git push origin feature/nome-feature
 
 **Branch protetti:** `main` e `develop` richiedono Pull Request obbligatoria. Nessuno fa push diretto su `main`.
 
-**CI/CD:** GitHub Actions esegue automaticamente build e lint a ogni push. Se la build fallisce, la Pull Request non puo essere mergiata.
+**CI/CD:** GitHub Actions esegue automaticamente build, lint e test a ogni push. Se la build o i test falliscono, la Pull Request non puo essere mergiata.
+
+### Testing
+
+Il progetto include test automatici con **Vitest**:
+
+```bash
+npm test          # Esegue tutti i test una volta
+npm run test:watch  # Esegue i test in modalita watch (sviluppo)
+```
+
+**26 unit test** coprono la logica di gioco (validazione risposte, timer 10s, bonus tappe, penalita, ranking). Vedi `src/__tests__/gameLogic.test.ts`.
+
+I test sono tracciabili ai requisiti nella [RTM](RTM.md).
 
 ### Metodologia Agile (Scrum)
 
