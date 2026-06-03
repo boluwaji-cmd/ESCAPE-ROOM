@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 IMP/
 .env.local
+supabase/
+src/__tests__/
+src/lib/gameLogic.ts
