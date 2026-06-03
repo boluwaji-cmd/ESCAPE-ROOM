@@ -44,3 +44,4 @@ IMP/
 supabase/
 src/__tests__/
 src/lib/gameLogic.ts
+src/lib/
