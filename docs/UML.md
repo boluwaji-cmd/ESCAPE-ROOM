@@ -1,7 +1,9 @@
 # UML Design Document
 ## Escape Room Outdoor -- Perugia
 
-**Documento:** UML-001 | **Versione:** 3.0 | **Data:** 4 Giugno 2026
+**Documento:** UML-001 | **Versione:** 3.1 | **Data:** 4 Giugno 2026
+
+> **Riferimento incrociato:** I Casi d'Uso testuali completi (UC-1..UC-5) con precondizioni, flusso principale numerato e flussi alternativi sono documentati in `SRS.md` Sezione 3.4.
 
 ---
 

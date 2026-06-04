@@ -1,4 +1,6 @@
-# User Stories -- Escape Room Outdoor Perugia
+# User Stories — Escape Room Outdoor Perugia
+
+**Documento:** US-001 | **Versione:** 1.0 | **Data:** 4 Giugno 2026
 
 ---
 
