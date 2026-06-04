@@ -1,4 +1,6 @@
-# Specifica del Committente -- AS GAIA
+# Specifica del Committente — AS GAIA
+
+**Documento:** CLIENTE-001 | **Versione:** 1.0 | **Data:** 4 Giugno 2026
 
 ## Escape Room Outdoor Perugia
 

@@ -1,4 +1,6 @@
-# Piano di Sviluppo -- Escape Room Perugia
+# Piano di Sviluppo — Escape Room Perugia
+
+**Documento:** PIANO-001 | **Versione:** 1.0 | **Data:** 4 Giugno 2026
 
 ---
 
@@ -30,10 +32,14 @@
 - [x] US5  -- Operatore crea gioco su mappa, sceglie tema domande
 - [x] US13 -- Log eventi di gioco in tempo reale
 
-## Fase 4 -- Rifinitura e Demo (Completato tranne video)
-- [x] US19 -- Anti-cheat GPS (validate-location)
-- [x] US22 -- Dati effimeri, nessuna persistenza post-partita
+## Fase 4 — Rifinitura e Demo (Completato)
+- [x] US19 — Anti-cheat GPS (validate-location)
+- [x] US22 — Dati effimeri, nessuna persistenza post-partita
 - [x] Backend verificato: tutte le 7 Edge Functions testate
+- [x] SRS v3.1: UC testuali con flussi alternativi (formato professore)
+- [x] API documentation page (`/api-docs`)
+- [x] Script demo (`docs/SCRIPT_DEMO.md`)
+- [x] GitHub Issues: 40+ issue, 3 sprint milestone, backlog completo
 - [ ] **Registrazione video demo**
 
 ---
