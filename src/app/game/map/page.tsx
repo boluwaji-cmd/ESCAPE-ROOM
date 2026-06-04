@@ -9,9 +9,9 @@ const TileLayer = dynamic(() => import("react-leaflet").then(m => m.TileLayer), 
 const Marker = dynamic(() => import("react-leaflet").then(m => m.Marker), { ssr: false });
 
 export default function MapPage() {
-  const { gameId, teamId } = useGameStore();
+  const { gameId } = useGameStore();
   const [position, setPosition] = useState<[number, number] | null>(null);
-  const [points, setPoints] = useState<any[]>([]);
+  const [_points, setPoints] = useState<any[]>([]);
 
   useEffect(() => {
     if (!gameId) return;

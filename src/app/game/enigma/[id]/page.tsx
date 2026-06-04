@@ -10,7 +10,7 @@ export default function EnigmaPage() {
   const [enigma, setEnigma] = useState<any>(null);
   const [answer, setAnswer] = useState("");
   const [result, setResult] = useState<any>(null);
-  const [timedOut, setTimedOut] = useState(false);
+  const [_timedOut, setTimedOut] = useState(false);
   const [timeLeft, setTimeLeft] = useState(10);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
