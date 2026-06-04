@@ -104,7 +104,8 @@ escape-room-perugia/
 │   │   ├── game/
 │   │   │   ├── map/page.tsx             # Mappa GPS + geofence (US1, US2)
 │   │   │   ├── enigma/[id]/page.tsx     # Interfaccia domanda (US3)
-│   │   │   └── leaderboard/page.tsx     # Classifica a tempo (US4, US14)
+│   │   │   ├── leaderboard/page.tsx     # Classifica a tempo (US4, US14)
+│   │   │   └── api-docs/page.tsx        # Documentazione API interattiva
 │   │   └── admin/
 │   │       ├── points/page.tsx          # Pannello operatore: POI su mappa (US5)
 │   │       └── game/create/page.tsx     # Pannello operatore: partita (US5)
@@ -123,30 +124,36 @@ escape-room-perugia/
 │   └── migrations/
 │       └── 001_initial_schema.sql       # Schema database
 ├── .github/workflows/ci.yml             # CI/CD pipeline
-├── .env.example                         # Template variabili d'ambiente
-├── SRS.md                               # Specifica dei Requisiti (IEEE 830)
-├── RTM.md                               # Matrice di Tracciabilita
-├── UML.md                               # Documento UML
-├── USERSTORY.md                         # 33 User Stories con note tecniche
-├── SPECIFICA_CLIENTE.md                 # Specifica del Committente
-├── DOCUMENTAZIONE_TECNICA.md            # Documentazione Tecnica
-├── PIANO_SVILUPPO.md                    # Piano di Sviluppo
-└── BRIEF_PROGETTO.md                    # Brief del Laboratorio
+└── .env.example                         # Template variabili d'ambiente
+```
+
+---
+
+## Architettura
+
+```mermaid
+graph TD
+    A[PWA Giocatore - Next.js] <--> B[Supabase Edge Functions - Deno]
+    C[Pannello Operatore - Next.js] <--> B
+    B <--> D[(PostgreSQL + RLS)]
+    B <--> E[Supabase Realtime - WebSocket]
+    B --> F[Groq API - Llama 3.3 70B]
+    B --> G[Pollinations.ai]
+    B --> H[Supabase Storage]
+    A <--> E
+    C <--> E
 ```
 
 ---
 
 ## Documentazione
 
-| Documento | Descrizione |
-|-----------|-------------|
-| [SRS.md](SRS.md) | Specifica dei Requisiti Software (IEEE 830) -- 33 user stories, requisiti non funzionali, modello del dominio |
-| [RTM.md](RTM.md) | Matrice di Tracciabilita -- requisito, implementazione, test |
-| [UML.md](UML.md) | Progettazione UML -- Use Case, Classi, Activity, Sequence, State Machine, Component, Deployment |
-| [USERSTORY.md](USERSTORY.md) | 33 User Stories con checklist e note del progettista |
-| [SPECIFICA_CLIENTE.md](SPECIFICA_CLIENTE.md) | Requisiti dal punto di vista del committente AS GAIA |
-| [DOCUMENTAZIONE_TECNICA.md](DOCUMENTAZIONE_TECNICA.md) | Architettura, Edge Functions, schema DB, prompt design |
-| [AGILE_GUIDE.md](AGILE_GUIDE.md) | Guida Agile/Scrum: workflow completo, cerimonie, ruoli, esempio pratico di una settimana |
+| Risorsa | Descrizione |
+|---------|-------------|
+| [API Docs](/api-docs) | Documentazione interattiva di tutte le 7 Edge Function (parametri, risposte, errori) |
+| [GitHub Issues](https://github.com/boluwaji-cmd/ESCAPE-ROOM/issues) | Backlog organizzato in 3 sprint, 40+ issue, 33 User Stories tracciate |
+| [GitHub Projects](https://github.com/boluwaji-cmd/ESCAPE-ROOM/projects) | Board Agile con milestone per Sprint 1, 2, 3 |
+| [Trello](https://trello.com/b/h6k2fmGF) | Board Scrum: Backlog, Sprint 1 [DONE], Sprint 2, Sprint 3, Completato |
 
 ---
 
