@@ -24,7 +24,24 @@ serve(async (req) => {
           supabase.functions.invoke("generate-enigma", { body: { zone: `punto-${start.id}`, difficulty: (i % 4) + 1, questionTheme: "perugia_italia" } })
         );
       }
-      await Promise.all(enigmaPromises);
+      const enigmaResults = await Promise.all(enigmaPromises);
+      // Persist generated enigmas to database
+      for (const result of enigmaResults) {
+        if (result.data) {
+          const e = result.data;
+          await supabase.from("enigma_pool").insert({
+            game_id,
+            point_of_interest_id: start.point_of_interest_id,
+            difficulty_level: e.difficulty || 2,
+            question: e.question,
+            options: JSON.stringify(e.options || []),
+            correct_answer: e.correctAnswer || e.correct_answer,
+            hint: e.hint || "",
+            explanation: e.explanation || "",
+            type: e.type || "multiple_choice",
+          });
+        }
+      }
     }
     await supabase.from("games").update({ status: "active", started_at: new Date().toISOString() }).eq("id", game_id);
     return new Response(JSON.stringify({ success: true }), { status: 200 });
