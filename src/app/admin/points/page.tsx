@@ -9,7 +9,7 @@ const TileLayer = dynamic(() => import("react-leaflet").then(m => m.TileLayer), 
 export default function AdminPointsPage() {
   const [form, setForm] = useState({ name: "", zone: "", radius: 40, description: "" });
 
-  const handleMapClick = async (lat: number, lng: number) => {
+  const _handleMapClick = async (lat: number, lng: number) => {
     const { error } = await supabase.from("points_of_interest").insert({
       name: form.name, zone: form.zone, latitude: lat, longitude: lng,
       activation_radius_meters: form.radius, description: form.description,
