@@ -1,0 +1,35 @@
+
+ RUN  v4.1.8 /home/boadepoju/Documents/ESCAPE-ROOM/escape-room-perugia
+
+ ✓ src/__tests__/gameLogic.test.ts > isAnswerCorrect > restituisce true per risposta esatta 9ms
+ ✓ src/__tests__/gameLogic.test.ts > isAnswerCorrect > confronto case-insensitive 2ms
+ ✓ src/__tests__/gameLogic.test.ts > isAnswerCorrect > ignora spazi prima e dopo 1ms
+ ✓ src/__tests__/gameLogic.test.ts > isAnswerCorrect > restituisce false per risposta sbagliata 1ms
+ ✓ src/__tests__/gameLogic.test.ts > isAnswerCorrect > restituisce false per risposta vuota 1ms
+ ✓ src/__tests__/gameLogic.test.ts > isTimedOut > non e scaduto per tempo recente 3ms
+ ✓ src/__tests__/gameLogic.test.ts > isTimedOut > e scaduto dopo 11 secondi 1ms
+ ✓ src/__tests__/gameLogic.test.ts > isTimedOut > e scaduto esattamente a 10 secondi (limite) 1ms
+ ✓ src/__tests__/gameLogic.test.ts > timeLeft > restituisce tempo pieno per partenza recente 3ms
+ ✓ src/__tests__/gameLogic.test.ts > timeLeft > restituisce 0 per tempo scaduto 1ms
+ ✓ src/__tests__/gameLogic.test.ts > incrementLocationBonus > incrementa da 0 a 1 1ms
+ ✓ src/__tests__/gameLogic.test.ts > incrementLocationBonus > incrementa normalmente entro il limite 0ms
+ ✓ src/__tests__/gameLogic.test.ts > incrementLocationBonus > non supera il massimo di 5 0ms
+ ✓ src/__tests__/gameLogic.test.ts > incrementLocationBonus > 5 tappe consecutive non superano il cap 0ms
+ ✓ src/__tests__/gameLogic.test.ts > addPenalty > aggiunge 10 secondi di default 1ms
+ ✓ src/__tests__/gameLogic.test.ts > addPenalty > accumula penalita multiple 0ms
+ ✓ src/__tests__/gameLogic.test.ts > effectiveTime > tempo positivo senza bonus 0ms
+ ✓ src/__tests__/gameLogic.test.ts > effectiveTime > bonus riduce il tempo 0ms
+ ✓ src/__tests__/gameLogic.test.ts > effectiveTime > bonus massimo applicato 0ms
+ ✓ src/__tests__/gameLogic.test.ts > effectiveTime > puo diventare zero 0ms
+ ✓ src/__tests__/gameLogic.test.ts > isAlreadyFailed > rileva domanda gia fallita 0ms
+ ✓ src/__tests__/gameLogic.test.ts > isAlreadyFailed > nuova domanda non e nei falliti 0ms
+ ✓ src/__tests__/gameLogic.test.ts > addFailedId > aggiunge nuovo ID 3ms
+ ✓ src/__tests__/gameLogic.test.ts > addFailedId > non duplica ID esistente 1ms
+ ✓ src/__tests__/gameLogic.test.ts > rankTeams > ordina per tempo effettivo crescente 1ms
+ ✓ src/__tests__/gameLogic.test.ts > rankTeams > parita di tempo mantiene ordine stabile 1ms
+
+ Test Files  1 passed (1)
+      Tests  26 passed (26)
+   Start at  08:53:33
+   Duration  570ms (transform 212ms, setup 0ms, import 267ms, tests 45ms, environment 0ms)
+
