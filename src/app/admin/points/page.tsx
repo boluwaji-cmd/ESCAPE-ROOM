@@ -3,6 +3,9 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { supabase } from "@/lib/supabase";
 
+const SUPABASE_URL = "https://onenmczbncokymqishxh.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_sZ9G9E-p_dnYn8RYuIVGsA_6FfToqJR";
+
 const AdminMap = dynamic(() => import("@/components/AdminMap"), { ssr: false });
 
 interface Poi {
@@ -61,12 +64,21 @@ export default function AdminPointsPage() {
       return;
     }
     setMessage("Salvataggio in corso...");
-    const { error } = await supabase.from("points_of_interest").insert({
-      name: form.name, zone: form.zone, latitude: lat, longitude: lng,
-      activation_radius_meters: form.radius, description: form.description,
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/admin-create-poi`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "apikey": SUPABASE_ANON_KEY,
+      },
+      body: JSON.stringify({
+        name: form.name, zone: form.zone, latitude: lat, longitude: lng,
+        radius: form.radius, description: form.description,
+      }),
     });
-    if (error) {
-      setMessage("Errore: " + error.message);
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      setMessage("Errore: " + (data.message || "Errore sconosciuto"));
     } else {
       setMessage("POI salvato con successo!");
       setForm(prev => ({ ...prev, name: "", description: "" }));

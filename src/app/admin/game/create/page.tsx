@@ -1,6 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+
+const SUPABASE_URL = "https://onenmczbncokymqishxh.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_sZ9G9E-p_dnYn8RYuIVGsA_6FfToqJR";
 
 const STEPS = ["Dati Partita", "Seleziona POI", "Crea Squadre", "Riepilogo & Avvia"];
 
@@ -23,15 +26,13 @@ export default function CreateGamePage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const availablePois = [
-    { id: "poi-1", name: "Fontana Maggiore", zone: "Perugia Centro" },
-    { id: "poi-2", name: "Cattedrale San Lorenzo", zone: "Perugia Centro" },
-    { id: "poi-3", name: "Rocca Paolina", zone: "Perugia Centro" },
-    { id: "poi-4", name: "Pozzo Etrusco", zone: "Perugia Centro" },
-    { id: "poi-5", name: "Arco Etrusco", zone: "Perugia Centro" },
-    { id: "poi-6", name: "Via dei Priori", zone: "Perugia Centro" },
-    { id: "poi-7", name: "Porta Sole", zone: "Perugia Centro" },
-  ];
+  const [availablePois, setAvailablePois] = useState<{id:string,name:string,zone:string}[]>([]);
+
+  useEffect(() => {
+    supabase.from("points_of_interest").select("id, name, zone").order("name").then(({ data }) => {
+      if (data) setAvailablePois(data);
+    });
+  }, []);
 
   const togglePoi = (id: string) => {
     setSelectedPois(prev => prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]);
@@ -47,11 +48,6 @@ export default function CreateGamePage() {
     setTeams(teams.filter((_, i) => i !== index));
   };
 
-  const generateAccessCode = () => {
-    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    return Array.from({ length: 6 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
-  };
-
   const startGame = async () => {
     if (selectedPois.length < 3) { setMessage("Seleziona almeno 3 POI."); return; }
     if (teams.length < 2) { setMessage("Crea almeno 2 squadre."); return; }
@@ -59,38 +55,24 @@ export default function CreateGamePage() {
     setMessage("");
 
     try {
-      const { data: game, error: gameErr } = await supabase.from("games").insert({
-        name: gameName || "Partita " + new Date().toLocaleDateString("it-IT"),
-        question_theme: theme,
-        status: "lobby",
-      }).select("id").single();
-      if (gameErr) throw new Error("Errore creazione gioco: " + gameErr.message);
-
-      const codes: string[] = [];
-      for (const team of teams) {
-        const code = generateAccessCode();
-        codes.push(code);
-        const { error: teamErr } = await supabase.from("teams").insert({
-          game_id: game.id, name: team.name, color: team.color,
-          difficulty: team.difficulty, access_code: code,
-          total_penalty_seconds: 0, location_bonus: 0,
-        });
-        if (teamErr) throw new Error("Errore creazione squadra: " + teamErr.message);
-      }
-
-      for (let i = 0; i < selectedPois.length; i++) {
-        const { error: poiErr } = await supabase.from("game_points").insert({
-          game_id: game.id, point_of_interest_id: selectedPois[i], order_index: i + 1,
-        });
-        if (poiErr) throw new Error("Errore collegamento POI: " + poiErr.message);
-      }
-
-      const { error: startErr } = await supabase.functions.invoke("start-game", {
-        body: { game_id: game.id },
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/admin-create-game`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+          "apikey": SUPABASE_ANON_KEY,
+        },
+        body: JSON.stringify({
+          gameName: gameName || "Partita " + new Date().toLocaleDateString("it-IT"),
+          theme,
+          teams: teams.map(t => ({ name: t.name, color: t.color, difficulty: t.difficulty })),
+          selectedPois,
+        }),
       });
-      if (startErr) throw new Error("Errore avvio partita: " + startErr.message);
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || "Errore sconosciuto");
 
-      setAccessCodes(codes);
+      setAccessCodes(data.accessCodes);
       setMessage("Partita avviata con successo!");
       setStep(4);
     } catch (err: any) {
