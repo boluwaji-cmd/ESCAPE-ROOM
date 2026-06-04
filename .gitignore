@@ -38,6 +38,11 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local-only (not for GitHub — team-internal docs and tools)
+docs/
+guides/
+tools/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
