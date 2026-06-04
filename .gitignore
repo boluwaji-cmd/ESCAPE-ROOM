@@ -38,6 +38,11 @@ yarn-error.log*
 # vercel
 .vercel
 
+# team members push their own roles — local only
+giacomo-pm/
+vitaly-admin/
+valentin-frontend/
+
 # local-only (not for GitHub — team-internal docs and tools)
 docs/
 guides/
